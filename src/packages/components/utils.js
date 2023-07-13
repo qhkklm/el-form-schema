@@ -187,20 +187,32 @@ const getObjectByPath = (obj, path) => {
 }
 
 // 简单深度拷贝
-const deepClone = obj => {
+const deepClone = (obj, cache = new WeakMap()) => {
   if (obj === null) return null
-  const clone = Object.assign({}, obj)
-  Object.keys(clone).forEach(
-    key =>
-      (clone[key] =
-        typeof obj[key] === 'object' ? deepClone(obj[key]) : obj[key])
-  )
+
+  // 检查缓存，避免重复克隆
+  if (cache.has(obj)) return cache.get(obj)
+
+  const clone = Array.isArray(obj) ? [] : {}
+  cache.set(obj, clone)
+
+  Object.keys(obj).forEach(key => {
+    if (typeof obj[key] === 'object') {
+      clone[key] = deepClone(obj[key], cache)
+    } else {
+      clone[key] = obj[key]
+    }
+  })
+
+  // 克隆数组的优化方法
   if (Array.isArray(obj)) {
     clone.length = obj.length
-    return Array.from(clone)
+    return Array.prototype.slice.call(clone)
   }
+
   return clone
 }
+
 
 // 比较是否相等
 const isEqual = function(source, target) {

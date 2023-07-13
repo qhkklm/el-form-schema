@@ -58,7 +58,7 @@ export const Component = (createElement, vm, key, item) => {
 
   // 合并事件
   item.on = Object.assign(on, {
-    input: function(value) {
+    input: function (value) {
       // 解决对象的问题 object: { test: '' }, name = object.test
       eval(`formValues.${name} = value`)
       // 清除页面所有 el-select 组件的选中状态
@@ -113,7 +113,7 @@ export const Component = (createElement, vm, key, item) => {
         }
         // 是否包含 arr_$index 的情况
         if (/\w+_\$index/g.test(condition)) {
-          key.replace(/(\w+)\[(\d)\]/g, function(findItem, $1, $2) {
+          key.replace(/(\w+)\[(\d)\]/g, function (findItem, $1, $2) {
             condition = condition.replaceAll(`${$1}_$index`, $2)
             return findItem
           })
@@ -289,7 +289,8 @@ export const Component = (createElement, vm, key, item) => {
     nodes = [
       createElement('div', {
         style: {
-          display: vifBool ? (item.vmodel ? (item.style && item.style.display ? item.style.display : 'inline-flex') : 'flow-root') : 'none',
+          width:'100%',
+          display: vifBool ? (item.vmodel ? (item.style && item.style.display ? item.style.display : 'inline-flex') : 'table') : 'none',
           ...((item.tag === 'slot' && !item.vmodel && item.inline && vifBool) ? { display: 'inline-flex', alignItems: 'center' } : {})
         },
         class: { 'el-form-item-inline': tag === 'slot', 'is-set-inline': tag === 'slot' && item.inline },
@@ -374,11 +375,11 @@ export const Component = (createElement, vm, key, item) => {
           item.label,
           createLabelTipComponent(createElement, item)
         ]) : null,
-        ... nodes
+        ...nodes
       ]
     ),
     item.isLastInline || item.inlineBlock
-      ? createElement('div', { style: { display: 'flex' }})
+      ? createElement('div', { style: { display: 'flex' } })
       : []
   ]
 }

@@ -201,8 +201,8 @@ export default {
   },
   methods: {
     /**
-		 * @description: 初始化解析schema
-		*/
+     * @description: 初始化解析schema
+    */
     async initSchemas() {
       const values = {}
       const lastKey = Object.keys(this.schema).pop()
@@ -223,8 +223,8 @@ export default {
       this.diffDataByInitValues(this.initValues, this.formValues)
     },
     /**
-		 *  通过 diff 最短路径去更新组件初始化值
-		*/
+     *  通过 diff 最短路径去更新组件初始化值
+    */
     diffDataByInitValues(current, previous) {
       const diffResult = diffData(current, previous)
       const getModelByPath = (arrPath) => arrPath.reduce((cur, prev) => cur[prev], previous)
@@ -243,8 +243,8 @@ export default {
       })
     },
     /**
-		 *  label/title/slot 模版字符串
-		*/
+     *  label/title/slot 模版字符串
+    */
     setExpTpl(component) {
       // slot: { after: "模版字符串", prepend: "模版字符串", append: "模版字符串" } 或 slot: "模版字符串"
       if (typeof component.slot === 'string' && /\$\{.+?\}/g.test(component.slot)) {
@@ -269,8 +269,8 @@ export default {
       })
     },
     /**
-		 *  设置表达式:  props 和 attrs
-		*/
+     *  设置表达式:  props 和 attrs
+    */
     setExp(component) {
       // 支持 required: '$model.a'
       if (component.required && typeof component.required === 'string') {
@@ -289,7 +289,7 @@ export default {
         const expProp = `${key}_exp_prop`
         const val = component.props[key]
         if (/\$index|\$item|\$model/g.test(val)) {
-          component.props[expProp] = 	val
+          component.props[expProp] = val
         }
       })
       // 支持 attrs 表达式
@@ -297,13 +297,13 @@ export default {
         const expAttr = `${key}_exp_attr`
         const val = component.attrs[key]
         if (/\$index|\$item|\$model/g.test(val)) {
-          component.attrs[expAttr] = 	val
+          component.attrs[expAttr] = val
         }
       })
     },
     /**
-		 * 监听表达式组件: $watchConfig
-		*/
+     * 监听表达式组件: $watchConfig
+    */
     watchConfigExp(component, wrapComponent) {
       // 监听目标对象：$watchConfig 和 $watchModel
       const watchTarget = (target, key) => {
@@ -327,8 +327,8 @@ export default {
       watchTarget(component, 'items')
     },
     /**
-		 * @description: 设置组件默认值
-		*/
+     * @description: 设置组件默认值
+    */
     initComponentDefaultProps(component, watchConfigExp) {
       component.isMarginBottom = true
       component.refreshKey = ''
@@ -432,8 +432,8 @@ export default {
       }
     },
     /**
-		 * @description: 递归遍历schema下所有组件
-		*/
+     * @description: 递归遍历schema下所有组件
+    */
     initComponentList(schema) {
       if (schema.components) {
         for (const _key in schema.components) {
@@ -451,8 +451,8 @@ export default {
       }
     },
     /**
-		 * @description: 递归遍历schema下所有组件的v-model的key
-		*/
+     * @description: 递归遍历schema下所有组件的v-model的key
+    */
     setValueKey(values, key, schema) {
       switch (schema.tag) {
         case 'object':
@@ -547,8 +547,8 @@ export default {
       }
     },
     /**
-		 * @description: 设置默认值
-		*/
+     * @description: 设置默认值
+    */
     setDefaultValue(item) {
       if (!isEmpty(item.default)) {
         return item.default
@@ -557,14 +557,14 @@ export default {
       }
     },
     /**
-		 * @description: 组合 <el-form-item> <组件 v-model> </el-form-item>
-		*/
+     * @description: 组合 <el-form-item> <组件 v-model> </el-form-item>
+    */
     renderFormItem(h, item, key, isInput = true) {
       return Component(h, this, key, item, isInput)
     },
     /**
-		 * @description: 通过 schema 定义渲染 el-form-item
-		*/
+     * @description: 通过 schema 定义渲染 el-form-item
+    */
     renderFormItems(h) {
       return Object.keys(this.schema).map((key, index) => {
         // key当作name来处理
@@ -592,11 +592,11 @@ export default {
       validaErrDoms.length && validaErrDoms[0].scrollIntoView(scrollOption)
     },
     /**
-		 *  @description 整体表单校验
-		 */
+     *  @description 整体表单校验
+     */
     validate(cb) {
       const vm = this
-      return this.$refs[this.refName].validate(async function() {
+      return this.$refs[this.refName].validate(async function () {
         cb.apply(this, arguments)
         await vm.$nextTick()
         try {
@@ -607,8 +607,8 @@ export default {
       })
     },
     /**
-		 * @description: 获取节点的所有字段域
-		*/
+     * @description: 获取节点的所有字段域
+    */
     getValidateProps(field) {
       const val = getObjectByPath(this.formValues, field)
       if ((typeof val !== 'object' && !Array.isArray(val)) || val === null) {
@@ -631,15 +631,15 @@ export default {
       }
     },
     /**
-		 * @description: 部分表单校验
-		*/
+     * @description: 部分表单校验
+    */
     validateField(props, cb) {
       props = this.getValidateProps(props)
       return this.$refs[this.refName] && this.$refs[this.refName].validateField(props, cb)
     },
     /**
-		 * @description: 部分表单校验
-		*/
+     * @description: 部分表单校验
+    */
     validateFieldPromise(props) {
       props = this.getValidateProps(props)
       return Promise.all(props.map((item) =>
@@ -651,8 +651,8 @@ export default {
       })
     },
     /**
-		 * @description: 重置表单字段
-		 */
+     * @description: 重置表单字段
+     */
     resetFields() {
       try {
         // 清楚隐藏字段的数据
@@ -665,8 +665,8 @@ export default {
       }
     },
     /**
-		 * @description: 强制重置 (专门针对复杂场景，无法重置的问题)
-		 */
+     * @description: 强制重置 (专门针对复杂场景，无法重置的问题)
+     */
     forceReset() {
       // 解决复杂组件array/table在设置minLimit 后，可能造成重置失效的Bug
       this.$nextTick(() => {
@@ -679,8 +679,8 @@ export default {
       this.resetFields()
     },
     /**
-		 * @description: 移除表单校验
-		 */
+     * @description: 移除表单校验
+     */
     clearValidate(props = []) {
       props = this.getValidateProps(props)
       return this.$refs[this.refName] && this.$refs[this.refName].clearValidate(props)
